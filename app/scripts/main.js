@@ -12,8 +12,9 @@
  * 
  * Firstly we need to import the React JS Library
  */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
 
 import Menu from './components/menu';
 import Home from './components/home';
@@ -22,7 +23,7 @@ import Home from './components/home';
 /**
  * We can start our initial App here in the main.js file
  */
-class App extends React.Component {
+function App() {
 
     /**
      * Renders the default app in the window, we have assigned this to an element called root.
@@ -30,7 +31,15 @@ class App extends React.Component {
      * @returns JSX
      * @memberof App
     */
-    render() {
+   const [query, setQuery] = useState([]);
+   useEffect(() => {
+   const loadQueries = async () => {
+       const response = await axios.get('https://localhost:3035/data');
+       console.log(response.data.data);
+       setQuery(response.data.data)}
+       loadQueries()}, [])
+
+
         return (
             <div className="App">
                 <Menu />

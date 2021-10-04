@@ -35,12 +35,19 @@ class Menu extends React.Component {
      * @param e [Object] - the event from a text change handler
      */
     onSearch(e) {
-        
-        // Start Here
-        // ...
-        
+    const onChangeHandler = (text) => {setText(text)}
+    if (text.length > 0) 
+    {matches = queries.filter(user => {const regex = new RegExp(`${text}`, "gi");
+    return queries.text.match(regex)})}
 
     }
+    setSuggestions(matches)
+    const onChangeHandler = (text) => {
+    let matches = []
+    if (text.length > 0) {matches = users.filter(user => {const regex = new RegExp(`${text}`, "gi");
+    return queries.text.match(regex)})}
+    setSuggestions(matches)
+    setText(text)};
 
     /**
      * Renders the default app in the window, we have assigned this to an element called root.

@@ -33,12 +33,43 @@ const port      = 3035;
  * The ServerResponse object 'res' represents the writable stream back to the client.
  */
 http.createServer(function (req, res) {
-    // .. Here you can create your data response in a JSON format
-    
-    
-    res.write("Response goes in here..."); // Write out the default response
+    const res = {
+        statusCode: 200,
+        body: JSON.stringify(data),
+    };
+    res.write("Server is here"); // Write out the default response
     res.end(); //end the response
 }).listen( port );
 
-
-console.log(`[Server running on ${hostname}:${port}]`);
+function httprequest() {
+     return new Promise((resolve, reject) => {
+        const options = {
+            host: 'localhost',
+            path: '/data',
+            port: 3035,
+            method: 'GET'
+        };
+        const req = http.request(options, (res) => {
+          if (res.statusCode < 200 || res.statusCode >= 300) {
+                return reject(new Error('statusCode=' + res.statusCode));
+            }
+            var body = [];
+            res.on('data', function(chunk) {
+                body.push(chunk);
+            });
+            res.on('end', function() {
+                try {
+                    body = JSON.parse(Buffer.concat(body).toString());
+                } catch(e) {
+                    reject(e);
+                }
+                resolve(body);
+            });
+        });
+        req.on('error', (e) => {
+          reject(e.message);
+        });
+        
+       req.end();
+    });
+}

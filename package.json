@@ -8,6 +8,7 @@
     "url": ""
   },
   "dependencies": {
+    "axios": "^0.22.0",
     "node": "^10.15.3"
   },
   "scripts": {
